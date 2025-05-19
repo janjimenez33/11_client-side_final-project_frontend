@@ -1,5 +1,7 @@
 import './App.css'
 import { useEffect } from 'react'
+import BookForm from './components/BookForm'
+
 
 function App() {
   useEffect(() => {
@@ -18,7 +20,8 @@ function App() {
 
   return (
     <>
-        <h1>Books</h1>
+        <h1>My Book collection</h1>
+        <BookForm />
     </>
   )
 }
