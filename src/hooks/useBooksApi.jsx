@@ -13,7 +13,7 @@ export function useBooksApi() {
         setError(null);
         try {
             const response = await axios.get(API_URL);
-            const reorderedBooks = response.data.map(book => {
+            const reorderedBooks = response.data.map((book) => {
                 if (!book.id) return book;
                 const { id, ...rest } = book;
                 return { id, ...rest };
@@ -38,7 +38,7 @@ export function useBooksApi() {
             setLoading(false);
         }
     };
-    
+
     const deleteBook = async (id) => {
         setLoading(true);
         setError(null);

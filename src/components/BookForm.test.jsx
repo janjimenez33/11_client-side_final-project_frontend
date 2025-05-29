@@ -3,60 +3,52 @@ import { render, fireEvent, cleanup } from "@testing-library/react";
 import BookForm from "./BookForm";
 
 describe("BookForm", () => {
-  afterEach(() => cleanup());
+    afterEach(() => cleanup());
 
-  it("should show the Add book button initially", () => {
+    it("should show the Add book button initially", () => {
+        // Arrange & Act
 
-    // Arrange & Act
+        const { getByText } = render(<BookForm onSubmit={() => {}} />);
+        // Assert
 
-    const { getByText } = render(
+        expect(getByText("Add book")).toBeInTheDocument();
+    });
 
-      <BookForm onSubmit={() => {}} />
+    it("should show the form when Add book is clicked", () => {
+        // Arrange
 
-    );
-    // Assert
+        const { getByText, getByLabelText } = render(
+            <BookForm onSubmit={() => {}} />,
+        );
 
-    expect(getByText("Add book")).toBeInTheDocument();
+        // Act
 
-  });
+        fireEvent.click(getByText("Add book"));
 
-  it("should show the form when Add book is clicked", () => {
+        // Assert
 
-    // Arrange
+        expect(getByLabelText(/Title/i)).toBeInTheDocument();
+        expect(getByLabelText(/Author/i)).toBeInTheDocument();
+        expect(getByLabelText(/Publication Year/i)).toBeInTheDocument();
+        expect(getByLabelText(/Reading Status/i)).toBeInTheDocument();
+    });
 
-    const { getByText, getByLabelText } = render(
-      <BookForm onSubmit={() => {}} />
-    );
+    it("should show Update Book if bookToEdit is provided", () => {
+        // Arrange
 
-    // Act
+        const bookToEdit = {
+            title: "Edit Book",
+            author: "Edit Author",
+            year: "2020",
+            status: "Pending",
+        };
+        // Act
 
-    fireEvent.click(getByText("Add book"));
+        const { getByText } = render(
+            <BookForm onSubmit={() => {}} bookToEdit={bookToEdit} />,
+        );
+        // Assert
 
-    // Assert
-
-    expect(getByLabelText(/Title/i)).toBeInTheDocument();
-    expect(getByLabelText(/Author/i)).toBeInTheDocument();
-    expect(getByLabelText(/Publication Year/i)).toBeInTheDocument();
-    expect(getByLabelText(/Reading Status/i)).toBeInTheDocument();
-  });
-
-  it("should show Update Book if bookToEdit is provided", () => {
-
-    // Arrange
-
-    const bookToEdit = {
-      title: "Edit Book",
-      author: "Edit Author",
-      year: "2020",
-      status: "Pending",
-    };
-    // Act
-
-    const { getByText } = render(
-      <BookForm onSubmit={() => {}} bookToEdit={bookToEdit} />
-    );
-    // Assert
-    
-    expect(getByText("Update Book")).toBeInTheDocument();
-  });
+        expect(getByText("Update Book")).toBeInTheDocument();
+    });
 });
